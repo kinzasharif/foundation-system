@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Donation</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href={{ url_for('static', filename='assets/css/style.css')}}>
 </head>
 <body>
     <header>
         <h1>Add Donation</h1>
-        <a href="index.html">Back to Dashboard</a>
+        <a href="{{ url_for('index')}}">Back to Dashboard</a>
     </header>
 
     <main>
-        <form id="donationForm">
+        <form id="donationForm" method="POST" action="{{ url_for('add_donation')}}">
             <label for="donor">Select Donor:</label>
-            <select id="donor" name="donor" required>
+            <select id="donor" name="donor_id" required>
                 <option value="">--Select Donor--</option>
+                 {% for donor in donors %}
+    <option value="{{ donor.id }}">{{ donor.name }}</option>
+    {% endfor %}
             </select>
 
             <label for="amount">Donation Amount:</label>
@@ -30,6 +33,6 @@
         <div id="message"></div>
     </main>
 
-    <script src="js/script.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/script.js')}}"></script>
 </body>
 </html>
