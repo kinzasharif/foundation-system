@@ -16,8 +16,6 @@ def get_db_conection():
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -67,6 +65,10 @@ def view_donations():
     conn = get_db_conection()
     cursor = conn.cursor(dictionary=True)
     
+    
+    cursor.execute("""
+SELECT * FROM donors""")
+    donor = cursor.fetchall()
     cursor.execute("""
         SELECT d.*, donors.name as donor_name 
         FROM donations d
@@ -81,7 +83,7 @@ def view_donations():
     
     cursor.close()
     conn.close()
-    return render_template('view_donations.html', donations=donations, total=total)
+    return render_template('view_donations.html', donations=donations, total=total, donor=donor)
 
 
 @app.route('/add_expense', methods=['GET', 'POST'])
@@ -92,9 +94,10 @@ def add_expense():
     if request.method == 'POST':
         description = request.form.get('description')
         amount = request.form.get('amount')
+        date = request.form.get('expense_date')
         
-        cursor.execute("INSERT INTO expenses (description, amount) VALUES (%s, %s)", 
-                      (description, amount))
+        cursor.execute("INSERT INTO expenses (description, amount, expense_date) VALUES (%s, %s, %s)", 
+                      (description, amount, date))
         conn.commit()
         flash("Expense Added Successfully!")
         return redirect(url_for('add_expense'))
@@ -115,6 +118,7 @@ def add_donation():
     if request.method == 'POST':
         donor_id = request.form.get('donor_id')
         amount = request.form.get('amount')
+        date = request.form.get('donation_date')
         
         # Basic validation
         if not donor_id or not amount:
@@ -122,8 +126,8 @@ def add_donation():
             return redirect(url_for('add_donation'))
         
         try:
-            cursor.execute("INSERT INTO donations (donor_id, amount) VALUES (%s, %s)", 
-                          (donor_id, amount))
+            cursor.execute("INSERT INTO donations (donor_id, amount, donation_date) VALUES (%s, %s, %s)", 
+                          (donor_id, amount, date))
             conn.commit()
             flash("Donation Added Successfully! 🎉")
         except Exception as e:
@@ -135,7 +139,6 @@ def add_donation():
     cursor.close()
     conn.close()
     return render_template('add_donation.html', donors=donors)
-
 
 @app.route('/add_donor', methods=['GET', 'POST'])
 def add_donor():

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Donations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css')}}">
+</head>
+<body>
+    <header>
+        <h1>View Donations</h1>
+        <a href="{{ url_for('index')}}">Back to Dashboard</a>
+    </header>
+
+    <main>
+        <div class="view_donations">
+
+            {% for donation in donations %}
+                <div class="donation_item">
+                    <p><strong>Donor:</strong> {{ donation.donor_name.capitalize() }}</p>
+                    <p><strong>Amount:</strong> {{ donation.amount }}</p>
+                    <p><strong>Date:</strong> {{ donation.donation_date }}</p>
+                </div>
+            {% endfor %}
+
+            <div class="donation_total">
+                <h3>Total: {{ total }}</h3>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='assets/js/script.js')}}"></script>
+</body>
+</html>

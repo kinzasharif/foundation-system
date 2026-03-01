@@ -52,3 +52,35 @@ button {
 button:hover {
     background: #00338a;
 }
+.view_donations {
+    width: 80%;
+    margin: 30px auto;
+}
+
+.view_donations h1 {
+    margin-bottom: 20px;
+}
+
+.donation_item {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.donation_item p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+.donation_item hr {
+    margin-top: 15px;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+}
+
+.view_donations h3 {
+    margin-top: 20px;
+    font-weight: 600;
+}
