@@ -7,6 +7,7 @@
     <link rel="stylesheet" href={{ url_for('static', filename='assets/css/style.css')}}>
 </head>
 <body>
+    {% include "includes/flashes.html"%}
     <header>
         <h1>Add Donor Information</h1>
         <a href="{{ url_for('index')}}">Back to Dashboard</a>
