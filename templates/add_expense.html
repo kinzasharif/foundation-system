@@ -7,6 +7,7 @@
     <link rel="stylesheet" href={{ url_for('static', filename='assets/css/style.css')}}>
 </head>
 <body>
+    {% include "includes/flashes.html"%}
     <header>
         <h1>Add Expense</h1>
         <a href="{{ url_for('index')}}">Back to Dashboard</a>
@@ -15,7 +16,7 @@
     <main>
         <form id="expenseForm">
             <label for="type">Expense Type:</label>
-            <select id="type" name="type" required>
+            <select id="type" name="description" required>
                 <option value="">--Select Type--</option>
                 <option value="Blood">Blood</option>
                 <option value="Food">Food</option>
@@ -26,7 +27,7 @@
             <input type="number" id="amount" name="amount" required>
 
             <label for="date">Expense Date:</label>
-            <input type="date" id="date" name="date" required>
+            <input type="date" id="date" name="expense_date" required>
 
             <button type="submit">Add Expense</button>
         </form>
@@ -34,5 +35,18 @@
     </main>
 
     <script src="{{ url_for('static', filename='assets/js/script.js')}}"></script>
-</body>
+
+<script> document.addEventListener("DOMContentLoaded", function () {
+
+    const flashMessage = document.querySelector(".flash-message");
+
+    if (flashMessage) {
+        setTimeout(() => {
+            flashMessage.style.transition = "opacity 0.5s ease";
+            flashMessage.style.opacity = "0";
+        }, 5000);  // 5 seconds
+    }
+
+});
+</script></body>
 </html>

@@ -101,6 +101,8 @@ def add_expense():
         conn.commit()
         flash("Expense Added Successfully!")
         return redirect(url_for('add_expense'))
+    else:
+        flash("Failed to add")
     
     cursor.close()
     conn.close()
