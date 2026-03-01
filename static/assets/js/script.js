@@ -34,15 +34,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const flashMessage = document.querySelector(".flash-message");
-
-    if (flashMessage) {
-        setTimeout(() => {
-            flashMessage.style.transition = "opacity 0.5s ease";
-            flashMessage.style.opacity = "0";
-        }, 5000);  // 5 seconds
+// Flash message auto-dismiss with cool animations
+document.addEventListener("DOMContentLoaded", function() {
+    const flashMessages = document.querySelectorAll(".alert");
+    
+    flashMessages.forEach(function(message) {
+        // Add close button functionality
+        const closeBtn = message.querySelector(".close");
+        if (closeBtn) {
+            closeBtn.addEventListener("click", function() {
+                dismissMessage(message);
+            });
+        }
+        
+        // Auto dismiss after 5 seconds
+        setTimeout(function() {
+            dismissMessage(message);
+        }, 5000);
+    });
+    
+    function dismissMessage(message) {
+        // Add slide-out animation
+        message.style.animation = "slideOut 0.5s ease forwards";
+        
+        // Remove from DOM after animation
+        setTimeout(function() {
+            if (message.parentNode) {
+                message.remove();
+                
+                // Remove the container if it's empty
+                const container = document.querySelector(".container");
+                if (container && container.children.length === 0) {
+                    container.remove();
+                }
+            }
+        }, 500);
     }
-
 });
