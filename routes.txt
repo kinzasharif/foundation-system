@@ -333,3 +333,74 @@ def admin_login():
             return render_template('adminlogin.html', register_user=True)
 
     return render_template('adminlogin.html', register_user=True)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register_user():
+    if request.method == 'POST':
+        try:
+            username = request.form['username'].strip()
+            email = request.form['email'].strip()
+            password = request.form['password']
+
+            hashed_password = generate_password_hash(password)
+
+            phone = request.form['phone'].strip()
+            cnic = request.form['cnic'].strip()
+
+            picture_path = None
+            if 'picture' in request.files:
+                file = request.files['picture']
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    unique_filename = f"{username}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
+                    filepath = os.path.join('static/uploads/users', unique_filename)
+                    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+                    file.save(filepath)
+
+                    try:
+                        img = Image.open(filepath)
+                        img.thumbnail((500, 500))
+                        img.save(filepath)
+                    except Exception as e:
+                        print(f"Error processing image: {e}")
+
+                    picture_path = f"uploads/users/{unique_filename}"
+
+            conn = get_db_connection()
+            cursor = conn.cursor(dictionary=True)
+
+            # Check if username OR email already exists
+            cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                flash("❌ Username or Email already exists! Please use a different one.")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('register_user'))
+
+            cursor.execute("""
+                INSERT INTO users (username, email, password, picture, phone, cnic, role)
+                VALUES (%s, %s, %s, %s, %s, %s, 'user')
+            """, (username, email, hashed_password, picture_path, phone, cnic))
+
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+            flash("✅ Registration successful! Please login.")
+            return redirect(url_for('user_login'))
+
+        except mysql.connector.Error as db_err:
+            print(f"Database error: {db_err}")
+            flash("⚠️ Database error occurred. Please try again.")
+            return redirect(url_for('register_user'))
+
+        except Exception as e:
+            print(f"Error during registration: {e}")
+            flash("⚠️ Something went wrong during registration. Try again.")
+            return redirect(url_for('register_user'))
+
+    return render_template('Register.html', home=True)
+
