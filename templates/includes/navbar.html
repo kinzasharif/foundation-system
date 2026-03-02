@@ -1,0 +1,88 @@
+<!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <div class="container mt-5 pt-5">
+    {% for category, message in messages %}
+    <div
+      class="alert alert-{{ category }} alert-dismissible fade show"
+      role="alert"
+    >
+      {{ message }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+
+<!-- Navbar / Header -->
+<header class="header d-flex align-items-center fixed-top">
+
+  <div
+    class="header-container container-fluid container-xl d-flex align-items-center justify-content-between"
+  >
+    <!-- Logo -->
+    <a
+      href="{{ url_for('user_profile') }}"
+      class="logo d-flex align-items-center text-decoration-none"
+    >
+      <i class="fas fa-ribbon text-danger fs-3 me-2"></i>
+      <h1 class="sitename m-0 fw-bold">BreastCare AI</h1>
+    </a>
+
+    {%if show_pp %}
+    <div class="user-menu d-flex align-items-center quick-mode-home">
+  <div class="user-info d-flex align-items-center gap-1">
+    <div class="avatar">
+      <a href="{{ url_for('user_settings') }}">
+        {% if session.get('picture') %}
+        <img src="{{ url_for('static', filename=session.picture) }}" alt="Profile" />
+        {% else %}
+        <span>{{ session.username[0]|upper }}</span>
+        {% endif %}
+      </div>
+      <span style="color: white;">Profile</span>
+    </a>
+    </div>
+   {% endif %}
+
+    <!-- Right side: Register + Login -->
+    <div class="d-flex align-items-center gap-2">
+      <!-- Register User Link with navmenu styles -->
+      <a
+        href="{{ url_for('user_profile') }}"
+        class="nav-link fw-semibold navmenu-link"
+      >
+        Home
+      </a>
+
+      <!-- Login Dropdown -->
+      <div class="user-menu dropdown">
+        <a href="{{ url_for('logout') }}" class="btn btn-danger px-4 py-2">
+          <i class="fa fa-sign-in-alt me-2"></i>Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Select all Bootstrap alerts
+    const alerts = document.querySelectorAll('.alert');
+
+    alerts.forEach(alert => {
+      // Wait 2 seconds (2000ms) then close
+      setTimeout(() => {
+        // Bootstrap 5 alert remove
+        const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+        bsAlert.close();
+      }, 2000);
+    });
+  });
+</script>
+

@@ -1,0 +1,99 @@
+<!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <div class="container mt-5 pt-5">
+    {% for category, message in messages %}
+    <div
+      class="alert alert-{{ category }} alert-dismissible fade show"
+      role="alert"
+    >
+      {{ message }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+<header class="header d-flex align-items-center fixed-top">
+
+  <div
+    class="header-container container-fluid container-xl d-flex align-items-center justify-content-between"
+  >
+    <!-- <a
+      href="{{ url_for('user_profile') }}"
+      class="logo d-flex align-items-center me-auto me-xl-0"
+    > -->
+    <a
+      href="{{ url_for('user_profile') }}"
+      class="logo"
+      style="display: flex; align-items: center; text-decoration: none"
+    >
+      <i
+        class="fas fa-ribbon"
+        style="color: #dc3545; font-size: 24px; margin-right: 8px"
+      ></i>
+      <h1
+        class="sitename"
+        style="margin: 0; font-weight: bold; color: white; font-size: 20px"
+      >
+        BreastCare AI
+      </h1>
+    </a>
+
+    <nav class="navmenu">
+      {% if details %}
+      <ul>
+        <li><a href="{{url_for('user_profile')}}" class="">Home</a></li>
+        <li><a href="#htu">Information</a></li>
+        <li><a href="#prediction">Prediction</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      {% endif %}
+    </nav>
+
+    {%if show_pp %}
+    <div class="user-menu d-flex align-items-center quick-mode-home">
+  <div class="user-info d-flex align-items-center gap-1">
+    <div class="avatar">
+      <a href="{{ url_for('user_settings') }}">
+        {% if session.get('picture') %}
+        <img src="{{ url_for('static', filename=session.picture) }}" alt="Profile" />
+        {% else %}
+        <span>{{ session.username[0]|upper }}</span>
+        {% endif %}
+      </div>
+      <span style="color: white;">Profile</span>
+    </a>
+  </div>
+   {% endif %}
+
+  {% if quick_home %}
+  <a href="{{ url_for('user_profile') }}" class="navmenu-link">Home</a>
+  {% endif %}
+
+  <a href="{{ url_for('logout') }}" class="btn-getstarted">Logout</a>
+</div>
+
+
+</header>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Select all Bootstrap alerts
+    const alerts = document.querySelectorAll('.alert');
+
+    alerts.forEach(alert => {
+      // Wait 2 seconds (2000ms) then close
+      setTimeout(() => {
+        // Bootstrap 5 alert remove
+        const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+        bsAlert.close();
+      }, 2000);
+    });
+  });
+</script>
+
