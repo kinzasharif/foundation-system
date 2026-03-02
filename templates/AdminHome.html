@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-danger {
+    border-color: #ebccd1;
+}
+
+.panel-danger > .panel-heading {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.panel-primary {
+    border-color: #337ab7;
+}
+
+.panel-primary > .panel-heading {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+/* Fix form groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Fix buttons */
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+/* Fix input groups */
+.input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+}
+
+.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.input-group-btn {
+    position: relative;
+    font-size: 0;
+    white-space: nowrap;
+    width: 1%;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+/* Fix columns */
+.col-md-offset-2 {
+    margin-left: 16.66666667%;
+}
+
+/* Make sure everything stays visible */
+.profile-picture-section,
+.form-group,
+.panel-body {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.panel-primary .panel-body form {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Ensure all form elements take full width */
+.panel-primary .form-group,
+.panel-primary .input-group,
+.panel-primary .form-control {
+    width: 100% !important;
+}
+
+/* Specifically target the profile editing container */
+.col-md-8.col-md-offset-2 {
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+/* Make sure the panel stretches full width */
+.panel-primary {
+    width: 100% !important;
+}
+.input-group {
+    display: flex !important;
+    width: 100% !important;
+}
+
+.input-group .form-control {
+    flex: 1 !important;
+    width: auto !important;
+}
+
+.input-group-btn {
+    width: auto !important;
+    flex-shrink: 0 !important;
+}
+
+/* Ensure the edit buttons stay on the same line */
+.input-group-btn .btn {
+    white-space: nowrap !important;
+    margin-left: 5px !important;
+}
+    .container {
+    margin-top: 100px !important;
+}
+
+
+body {
+    padding-top: 130px;
+    padding-bottom: 0 !important;
+}
+
+footer {
+    position: relative !important;
+    margin-top: 50px !important;
+}
+         body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .header {
+    margin: 0 !important;
+    padding: 0.8rem 0 !important;
+    top: 0 !important;
+  }
+  
+  /* Force remove any top spacing */
+  .header::before {
+    display: none !important;
+  }
+
+        footer .container .row .col-xs-12 {
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+       
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+  
+  .container {
+    max-width: 1200px !important; 
+    width: 100% !important;
+    margin: 0 auto !important; 
+    overflow-x: hidden !important;
+  }
+   
+ 
+  footer .container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+  }
+  
+  footer {
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+   
+
+body {
+  
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+
+.main {
+  margin-top: 0 !important;
+}
+
+body {
+position: relative;
+min-height: 100vh;
+padding-bottom: 60px; 
+}
+
+footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+}
+
+body {
+    padding-top: 130px;
+}
+
+/* Add this to your existing style tag */
+.navbar {
+    position: fixed !important;
+    top: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+}
+
+body {
+    padding-top: 130px !important;
+    /* keep your existing body styles */
+}
+</style>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BreastCare AI - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Keep your existing CSS files but reorder them -->
+    <link href="{{ url_for('static', filename='assets/css/bootstrap.css') }}" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='assets/css/general_navbar.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='assets/css/settings.css') }}" rel="stylesheet" />
+</head>
+  </head>
+  <body data-has-image="{% if session.get('picture') %}true{% else %}false{% endif %}" 
+      data-original-image="{% if session.get('picture') %}{{ url_for('static', filename=session.picture) }}{% endif %}">
+   
+   
+{% include "includes/admin_navbar.html"%}
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div>
+            
+            <div class="panel panel-danger">
+              <div class="panel-heading text-center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+  
+  <h3 style="margin: 0;">
+   👤 &nbsp;  {{ session.username.capitalize() }}'s Dashboard
+  </h3>
+</div>
+<div class="panel-body text-center">
+  <p>Welcome {{ session.username.capitalize() }}! Manage your Profile Below! </p>
+
+
+  </div>
+</div>
+
+<!-- ADD PROFILE EDITING SECTION HERE -->
+
+
+<div class="container" style="margin-top: 30px;">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>📝 Edit Your Profile</h4>
+                </div>
+
+                <div class="panel-body">
+
+                  <!-- Profile Picture Section - FIXED -->
+<div class="profile-picture-section">
+    <label style="font-weight: bold; display: block; margin-bottom: 10px;">Profile Picture</label>
+    
+    <!-- Image Preview Container - USING CSS CLASSES -->
+    <div id="image-container">
+        {% if session.get('picture') %}
+        <img src="{{ url_for('static', filename=session.picture) }}" 
+             alt="Profile Picture" 
+             id="profile-preview">
+        {% else %}
+        <div id="no-image-box">
+            <span id="no-image-text">No Image</span>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Separate form for Remove button -->
+    <form method="POST" action="{{ url_for('admin_update_profile') }}" id="remove-picture-form" style="display: inline;">
+        <input type="hidden" name="remove_picture" value="true">
+        <input type="hidden" name="username" value="{{ session.username }}">
+        <input type="hidden" name="email" value="{{ session.email }}">
+        <input type="hidden" name="phone" value="{{ session.get('phone', '') }}">
+        <input type="hidden" name="cnic" value="{{ session.get('cnic', '') }}">
+    </form>
+    
+    <!-- Form for picture upload -->
+    <form method="POST" action="{{ url_for('admin_update_profile') }}" enctype="multipart/form-data" id="picture-form">
+        <div class="profile-picture-buttons">
+            <!-- Hidden file input -->
+            <input type="file" name="picture" accept="image/*" id="profile-pic-input" style="display: none;">
+            
+            <!-- Change button -->
+            <button type="button" class="btn btn-primary btn-sm" onclick="triggerFileInput()" id="change-btn">📷 Change</button>
+            
+            <!-- Confirm button -->
+            <button type="submit" class="btn btn-success btn-sm" id="confirm-picture" style="display: none;">✅ Confirm</button>
+            
+            <!-- Cancel button -->
+            <button type="button" class="btn btn-default btn-sm" id="cancel-picture" style="display: none;">❌ Cancel</button>
+            
+            {% if session.get('picture') %}
+            <!-- Remove button -->
+            <button type="button" class="btn btn-danger btn-sm" id="remove-btn" 
+                    onclick="removeProfilePicture()">
+                🗑️ Remove
+            </button>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+                    <form method="POST" action="{{ url_for('admin_update_profile') }}" enctype="multipart/form-data">
+                        
+                        <!-- Username Field -->
+                        <div class="form-group">
+                            <label>Username:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ session.username }}" readonly id="username-display">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-warning" onclick="enableEditing('username')">✏️ Edit</button>
+                                </span>
+                            </div>
+                            <div id="username-edit" style="display: none; margin-top: 10px;">
+                                <input type="text" class="form-control" name="username" value="{{ session.username }}">
+                                <div style="margin-top: 5px;">
+                                    <button type="submit" class="btn btn-success btn-sm">💾 Save</button>
+                                    <button type="button" class="btn btn-default btn-sm" onclick="cancelEditing('username')">❌ Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="form-group">
+                            <label>Email:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ session.email }}" readonly id="email-display">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-warning" onclick="enableEditing('email')">✏️ Edit</button>
+                                </span>
+                            </div>
+                            <div id="email-edit" style="display: none; margin-top: 10px;">
+                                <input type="email" class="form-control" name="email" value="{{ session.email }}">
+                                <div style="margin-top: 5px;">
+                                    <button type="submit" class="btn btn-success btn-sm">💾 Save</button>
+                                    <button type="button" class="btn btn-default btn-sm" onclick="cancelEditing('email')">❌ Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                       <!-- Phone Field - FIXED -->
+<div class="form-group">
+    <label>Phone:</label>
+    <div class="input-group">
+        <input type="number" class="form-control" value="{{ session.get('phone', '') }}" readonly id="phone-display">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" onclick="enableEditing('phone')">✏️ Edit</button>
+        </span>
+    </div>
+    <div id="phone-edit" style="display: none; margin-top: 10px;">
+        <input type="number" class="form-control" name="phone" value="{{ session.get('phone', '') }}">
+        <div style="margin-top: 5px;">
+            <button type="submit" class="btn btn-success btn-sm">💾 Save</button>
+            <button type="button" class="btn btn-default btn-sm" onclick="cancelEditing('phone')">❌ Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- CNIC Field  -->
+<div class="form-group">
+    <label>CNIC:</label>
+    <div class="input-group">
+        <input type="number" class="form-control" value="{{ session.get('cnic', '') }}" readonly id="cnic-display">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" onclick="enableEditing('cnic')">✏️ Edit</button>
+        </span>
+    </div>
+    <div id="cnic-edit" style="display: none; margin-top: 10px;">
+        <input type="number" class="form-control" name="cnic" value="{{ session.get('cnic', '') }}">
+        <div style="margin-top: 5px;">
+            <button type="submit" class="btn btn-success btn-sm">💾 Save</button>
+            <button type="button" class="btn btn-default btn-sm" onclick="cancelEditing('cnic')">❌ Cancel</button>
+        </div>
+    </div>
+</div>
+
+                        <!-- Password Field -->
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" value="••••••••" readonly id="password-display">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-warning" onclick="enableEditing('password')">✏️ Change Password</button>
+                                </span>
+                            </div>
+                            <div id="password-edit" style="display: none; margin-top: 10px;">
+                                <input type="password" class="form-control" name="current_password" placeholder="Current Password" style="margin-bottom: 5px;">
+                                <input type="password" class="form-control" name="new_password" placeholder="New Password" style="margin-bottom: 5px;">
+                                <input type="password" class="form-control" name="confirm_password" placeholder="Confirm New Password">
+                                <div style="margin-top: 5px;">
+                                    <button type="submit" class="btn btn-success btn-sm">💾 Update Password</button>
+                                    <button type="button" class="btn btn-default btn-sm" onclick="cancelEditing('password')">❌ Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                         
+                               
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- END PROFILE EDITING SECTION -->
+
+<hr />
+</div>
+</div>
+
+    <hr />
+    
+    <footer class="text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <p>BreastCare AI - Your Companion to quick and easy diagnosis</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript Files - ADD THESE -->
+       <!-- Remove all existing script tags and use these instead: -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery-1.11.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/ajax-component.js') }}"></script><script>
+// Profile Picture Functions
+function triggerFileInput() {
+    document.getElementById('profile-pic-input').click();
+}
+
+function removeProfilePicture() {
+    if (confirm('Are you sure you want to remove your profile picture?')) {
+        document.getElementById('remove-picture-form').submit();
+    }
+}
+
+// Edit Field Functions
+function enableEditing(field) {
+    document.getElementById(field + '-display').style.display = 'none';
+    document.getElementById(field + '-edit').style.display = 'block';
+}
+
+function cancelEditing(field) {
+    document.getElementById(field + '-display').style.display = 'block';
+    document.getElementById(field + '-edit').style.display = 'none';
+}
+
+// File input change handler - FIXED PREVIEW
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('profile-pic-input');
+    const changeBtn = document.getElementById('change-btn');
+    const confirmBtn = document.getElementById('confirm-picture');
+    const cancelBtn = document.getElementById('cancel-picture');
+    const removeBtn = document.getElementById('remove-btn');
+    const imageContainer = document.getElementById('image-container');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                // Show confirm and cancel buttons
+                changeBtn.style.display = 'none';
+                confirmBtn.style.display = 'inline-block';
+                cancelBtn.style.display = 'inline-block';
+                if (removeBtn) {
+                    removeBtn.style.display = 'none';
+                }
+                
+                // CREATE OR UPDATE IMAGE PREVIEW
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Check if we have existing image or no-image box
+                    let existingImg = document.getElementById('profile-preview');
+                    let noImageBox = document.getElementById('no-image-box');
+                    
+                    if (existingImg) {
+                        // Update existing image
+                        existingImg.src = e.target.result;
+                    } else if (noImageBox) {
+                        // Replace no-image box with image
+                        noImageBox.style.display = 'none';
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.alt = "Profile Picture";
+                        newImg.id = "profile-preview";
+                        newImg.style.maxWidth = "200px";
+                        newImg.style.maxHeight = "200px";
+                        newImg.style.borderRadius = "5px";
+                        imageContainer.appendChild(newImg);
+                    } else {
+                        // Create new image
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.alt = "Profile Picture";
+                        newImg.id = "profile-preview";
+                        newImg.style.maxWidth = "200px";
+                        newImg.style.maxHeight = "200px";
+                        newImg.style.borderRadius = "5px";
+                        imageContainer.innerHTML = '';
+                        imageContainer.appendChild(newImg);
+                    }
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+
+    // Cancel picture upload - FIXED
+    // Cancel picture upload - FIXED DESIGN
+if (cancelBtn) {
+    cancelBtn.addEventListener('click', function() {
+        fileInput.value = '';
+        changeBtn.style.display = 'inline-block';
+        confirmBtn.style.display = 'none';
+        cancelBtn.style.display = 'none';
+        if (removeBtn) {
+            removeBtn.style.display = 'inline-block';
+        }
+        
+        // RESTORE ORIGINAL STATE PROPERLY
+        const originalImage = document.body.getAttribute('data-original-image');
+        const hasImage = document.body.getAttribute('data-has-image') === 'true';
+        
+        // Clear the container first
+        imageContainer.innerHTML = '';
+        
+        if (hasImage && originalImage) {
+            // Restore original image with proper styling
+            const img = document.createElement('img');
+            img.src = originalImage;
+            img.alt = "Profile Picture";
+            img.id = "profile-preview";
+            img.style.maxWidth = "200px";
+            img.style.maxHeight = "200px";
+            img.style.borderRadius = "5px";
+            imageContainer.appendChild(img);
+        } else {
+            // Restore "No Image" box with original styling
+            const noImageBox = document.createElement('div');
+            noImageBox.id = 'no-image-box';
+            noImageBox.style.display = 'flex';
+            noImageBox.style.alignItems = 'center';
+            noImageBox.style.justifyContent = 'center';
+            noImageBox.style.height = '100%';
+            
+            const noImageText = document.createElement('span');
+            noImageText.id = 'no-image-text';
+            noImageText.textContent = 'No Image';
+            noImageText.style.color = '#999';
+            noImageText.style.fontStyle = 'italic';
+            
+            noImageBox.appendChild(noImageText);
+            imageContainer.appendChild(noImageBox);
+        }
+    });
+}
+});
+</script>
+  </body>
+</html>

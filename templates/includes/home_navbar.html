@@ -71,11 +71,11 @@
   </div>
    {% endif %}
 
-  {% if quick_home %}
+  
   <a href="{{ url_for('user_profile') }}" class="navmenu-link">Home</a>
-  {% endif %}
+  
 
-  <a href="{{ url_for('logout') }}" class="btn-getstarted">Logout</a>
+  <a href="{{ url_for('user_login') }}" class="btn-getstarted">Logout</a>
 </div>
 
 
