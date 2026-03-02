@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .navbar {
+        position: fixed !important;
+        top: 0 !important;
+        width: 100% !important;
+        z-index: 9999 !important;
+        background: #f8f8f8 !important;
+        border-bottom: 1px solid #e7e7e7 !important;
+      }
+
+      body {
+        padding-top: 130px !important;
+        background-color: #f8f9fa;
+      }
+
+      .user-card {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .user-image {
+        flex: 0 0 170px;
+      }
+      .user-image img {
+        width: 170px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid #ddd;
+      }
+      .no-user {
+        width: 170px;
+        height: 120px;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: #666;
+        font-style: italic;
+        border: 2px solid #eee;
+      }
+
+      .user-details {
+        flex: 1;
+      }
+
+      .meta-row {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .meta-row p {
+        margin: 0;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .card-actions {
+        text-align: right;
+      }
+
+      .section-heading {
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .panel-danger {
+        border-color: #ebccd1;
+        border-radius: 4px;
+      }
+
+      .panel-danger > .panel-heading {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+        padding: 15px;
+        border-radius: 4px 4px 0 0;
+      }
+
+      .panel-body {
+        color: rgb(0, 0, 0);
+        padding: 15px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+      }
+
+      .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+      }
+
+      .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+        padding: 15px;
+        border-radius: 4px;
+      }
+
+      .user-details h4,
+      .user-details .meta-row p {
+        color: #333 !important;
+      }
+
+      .panel-body h3,
+      .panel-body h4,
+      .panel-body p {
+        color: #000 !important;
+      }
+    </style>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BreastCare AI - Admin Dashboard</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Your custom CSS files - LOAD AFTER Bootstrap 5 to override -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='assets/css/bootstrap.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='assets/css/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='assets/css/settings.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='assets/css/general_navbar.css') }}"
+    />
+  </head>
+  <body>
+    {% include "includes/admin_navbar.html" %}
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-danger">
+            <div class="panel-heading text-center">
+              <h4 style="margin: 0">
+                <i class="fas fa-users" style="margin-right: 8px"></i>
+                Manage Users
+              </h4>
+            </div>
+            <div class="panel-body text-center">
+              <h4 style="margin: 0">
+                <strong>Welcome, {{ session.username.capitalize() }}!</strong>
+                Manage User accounts below.
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <h3 class="section-heading">
+        <i class="fas fa-users" style="margin-right: 8px"></i>User Accounts
+      </h3>
+
+      {% if users %} {% for user in users %}
+      <div class="user-card">
+        <div class="user-image">
+          {% if user.picture %}
+          <img
+            src="{{ url_for('static', filename=user.picture) }}"
+            alt="{{ user.username }}"
+          />
+          {% else %}
+          <div class="no-user">No Image</div>
+          {% endif %}
+        </div>
+
+        <div class="user-details">
+          <h4 style="margin-top: 0"><strong>USER ID: {{ user.id }}</strong></h4>
+          <div class="meta-row">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Phone:</strong> {{ user.phone }}</p>
+            <p><strong>CNIC:</strong> {{ user.cnic }}</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <form
+            action="{{ url_for('admin_delete_user', user_id=user.id) }}"
+            method="POST"
+            style="display: inline"
+          >
+            <button
+              type="submit"
+              class="btn btn-danger btn-sm"
+              onclick="return confirm('Are you sure you want to delete this user? This action cannot be undone.')"
+            >
+              <i class="fas fa-trash" style="margin-right: 5px"></i> Delete
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div class="alert alert-info">
+        <p style="margin: 0">No registered users found.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <footer class="text-center" style="margin-top: 50px; padding: 20px 0">
+      <div class="container">
+        <p style="margin: 0">
+          BreastCare AI - Your Companion to quick and easy diagnosis
+        </p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery-1.11.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.js') }}"></script>
+  </body>
+</html>
