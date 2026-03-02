@@ -1,421 +1,594 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Breast Cancer Prediction</title>
-    <meta name="description" content="breast cancer prediction model" />
-    <meta name="keywords" content="breast cancer, prediction, medical AI" />
-
-    <!-- Favicon -->
-    <link
-      href="{{ url_for('static', filename='assets/img/favicon.png') }}"
-      rel="icon"
-    />
-    <link
-      href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}"
-      rel="apple-touch-icon"
-    />
-
-    <!-- Fonts and Vendors -->
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Raleway:wght@500;700&family=Nunito+Sans:wght@600;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}"
-      rel="stylesheet"
-    />
-
-    <!-- Navbar CSS -->
-    <link
-      href="{{ url_for('static', filename='assets/css/general_navbar.css') }}"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ url_for('static', filename='assets/css/main.css') }}"
-      rel="stylesheet"
-    />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Hope Foundation</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Your Navbar CSS -->
+    <link href="{{ url_for('static', filename='assets/css/general_navbar.css') }}" rel="stylesheet">
+    
     <style>
-      /* Original styles */
-      #spinner-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(6px);
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        transition: opacity 0.6s ease-in-out;
-      }
-
-      .fade-out {
-        animation: fadeOut 0.6s ease forwards;
-      }
-
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        to {
-          opacity: 0;
-          visibility: hidden;
-        }
-      }
 
-      #hero .visual-content img {
-        max-height: 300px;
-        width: auto;
-        object-fit: contain;
-      }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e3c72;  /* Dark blue */
+            min-height: 100vh;
+        }
+
+        /* Main container */
+        .dashboard-container {
+            margin-top: 100px;
+            padding: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Welcome card */
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .welcome-card h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .welcome-card p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .welcome-card i {
+            color: #ff6b6b;
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        /* Action Cards */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px 25px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            background: white;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+        }
+
+        .action-card i {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .action-card h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .action-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .donation-card i { color: #28a745; }
+        .expense-card i { color: #dc3545; }
+        .donor-card i { color: #17a2b8; }
+
+        /* Recent Activity */
+        .activity-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .section-header a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .activity-item:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 20px;
+        }
+
+        .icon-donation { background: #e3f7e3; color: #28a745; }
+        .icon-expense { background: #ffe5e5; color: #dc3545; }
+        .icon-donor { background: #e3f2fd; color: #17a2b8; }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .activity-details p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        .activity-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .amount-positive { color: #28a745; }
+        .amount-negative { color: #dc3545; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .modal-header h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .modal-footer {
+            padding: 20px 25px 25px;
+            border-top: 1px solid #f1f1f1;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-container {
+                padding: 15px;
+            }
+            
+            .welcome-card h1 {
+                font-size: 28px;
+            }
+            
+            .activity-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .activity-icon {
+                margin: 0;
+            }
+        }
     </style>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
-
-  <body class="{% if prediction %}result-mode{% endif %}">
-    <div id="spinner-overlay">
-      <lottie-player
-        src="https://assets7.lottiefiles.com/packages/lf20_p8bfn5to.json"
-        background="transparent"
-        speed="1"
-        style="width: 180px; height: 180px"
-        loop
-        autoplay
-      ></lottie-player>
-      <p
-        style="
-          margin-top: 10px;
-          font-size: 18px;
-          font-weight: 500;
-          color: #ffffff;
-        "
-      >
-        Analyzing, please wait...
-      </p>
-      <p
-        id="fun-fact"
-        style="
-          font-size: 30px;
-          color: #cccccc;
-          max-width: 80%;
-          text-align: center;
-        "
-      ></p>
-    </div>
-
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
-    <!-- NAVBAR COMPONENT -->
+</head>
+<body>
+    <!-- Your existing navbar -->
     {% include 'includes/home_navbar.html' %}
 
-    <main class="main" style="margin-top: 100px">
-      {% if not prediction and not message %}
-      <div id="main-ui">
-        <!-- Hero -->
-        <section id="hero" class="hero section">
-          <div class="container-fluid p-0">
-            <div class="row no-gutters">
-              <div
-                class="col-12 content-col d-flex hero-image"
-                data-aos="fade-up"
-              >
-                <div
-                  class="content"
-                  style="
-                    position: relative;
-                    z-index: 1;
-                    max-width: 600px;
-                    padding: 40px;
-                    color: white;
-                  "
-                >
-                  <h5 class="agency-name">MEDICAL AI TOOL</h5>
-                  <h1 class="main-heading heading-gradient">
-                    BREAST CANCER <br />PREDICTION
-                  </h1>
-                  <div class="divider my-3"></div>
-                  <p class="description">
-                    Our AI Model helps in Breast Cancer Detection based on input
-                    features and provides 98% accurate results.
-                  </p>
-                  <a href="#prediction" class="btn btn-warning mt-3">
-                    <span>TRY PREDICTION</span>
-                    <i class="bi bi-arrow-right"></i>
-                  </a>
-                  <!-- <a href="{{ url_for('quick') }}" class="btn btn-warning mt-3"> -->
-                    <span>Quick Mode</span>
-                    <i class="bi bi-arrow-right"></i>
-                  </a>
+    
+
+    <!-- Main content -->
+    <div class="dashboard-container">
+        <!-- Welcome card with nice icon -->
+        <div class="welcome-card">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h1>Welcome back, {{ session.get('username', 'User') }}! 👋</h1>
+            <p>What would you like to do today?</p>
+        </div>
+
+        <!-- Action cards - what the user CAN do -->
+        <div class="actions-grid">
+            <!-- Make a Donation Card -->
+            <div class="action-card donation-card" onclick="openModal('donationModal')">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3>Make a Donation</h3>
+                <p>Support a cause by making a donation</p>
+                <small style="color: #28a745;">Click to donate →</small>
+            </div>
+
+            <!-- Add an Expense Card -->
+            <div class="action-card expense-card" onclick="openModal('expenseModal')">
+                <i class="fas fa-chart-line"></i>
+                <h3>Add an Expense</h3>
+                <p>Record an expense you made for the foundation</p>
+                <small style="color: #dc3545;">Click to add →</small>
+            </div>
+
+            <!-- Register as Donor Card -->
+            <div class="action-card donor-card" onclick="openModal('donorModal')">
+                <i class="fas fa-user-plus"></i>
+                <h3>Become a Donor</h3>
+                <p>Register yourself as a regular donor</p>
+                <small style="color: #17a2b8;">Click to register →</small>
+            </div>
+        </div>
+
+        <!-- Recent Activity (what user has done) -->
+        <div class="activity-section">
+            <div class="section-header">
+                <h2><i class="fas fa-history me-2"></i>My Recent Activity</h2>
+                <a href="{{ url_for('index') }}">View all history <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+
+            <div class="activity-list">
+                {% if recent_activities %}
+                    {% for activity in recent_activities %}
+                        {% if activity.type == 'donation' %}
+                        <!-- Donation item -->
+                        <div class="activity-item">
+                            <div class="activity-icon icon-donation">
+                                <i class="fas fa-hand-holding-heart"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h4>Donation to {{ activity.cause }}</h4>
+                                <p><i class="far fa-calendar me-2"></i>{{ activity.date }}</p>
+                            </div>
+                            <div class="activity-amount amount-positive">+${{ "%.2f"|format(activity.amount) }}</div>
+                        </div>
+                        {% elif activity.type == 'expense' %}
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon icon-expense">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h4>{{ activity.description }}</h4>
+                                <p><i class="far fa-calendar me-2"></i>{{ activity.date }}</p>
+                            </div>
+                            <div class="activity-amount amount-negative">-${{ "%.2f"|format(activity.amount) }}</div>
+                        </div>
+                        {% else %}
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon icon-donor">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h4>Registered as Donor</h4>
+                                <p><i class="far fa-calendar me-2"></i>{{ activity.date }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x mb-3" style="color: #ccc;"></i>
+                    <p style="color: #666;">No activity yet. Start by making a donation or adding an expense!</p>
                 </div>
-              </div>
+                {% endif %}
             </div>
-          </div>
-        </section>
-
-        <!-- Prediction Form -->
-        <section id="prediction" class="prediction-section section">
-          <div class="prediction-form text-center">
-            <h3 class="mb-4">Breast Cancer Prediction</h3>
-            <form
-              action="{{ url_for('predict') }}"
-              method="POST"
-              class="mx-auto"
-              style="max-width: 500px"
-            >
-              <div class="mb-3 text-start">
-                <label for="medicalFeatures" class="form-label"
-                  >Input All Medical Features</label
-                >
-                <input
-                  type="text"
-                  name="feature"
-                  class="form-control"
-                  id="medicalFeatures"
-                  placeholder="Enter comma-separated values (e.g., 1.2, 3.4, 5.6)"
-                  required
-                />
-                <small class="text-muted-2"
-                  >Please enter all required medical features separated by
-                  commas</small
-                >
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-submit btn-primary">
-                  Analyze
-                </button>
-
-                <!-- <a
-                  href="{{ url_for('quick') }}"
-                  class="btn btn-submit btn-primary"
-                > -->
-                  Quick Mode
-                </a>
-              </div>
-            </form>
-
-            <div class="prediction-image text-center mt-4">
-              <img
-                src="{{ url_for('static', filename='assets/medical-analysis.jpg') }}"
-                alt="Medical Analysis"
-                class="img-fluid"
-                style="max-width: 90%; max-height: 350px; object-fit: contain"
-              />
-            </div>
-          </div>
-        </section>
-
-        <!-- How to Use -->
-        <section
-          id="htu"
-          class="how-to-use-section section mt-5 pt-5 text-center"
-        >
-          <div class="container">
-            <h4 class="how-to-heading mb-4">How to use this tool</h4>
-            <div class="d-flex justify-content-center">
-              <ol class="how-to-list text-start">
-                <li>Enter all medical feature values separated by commas</li>
-                <li>Click the "Analyze" button to get instant results</li>
-                <li>Review the prediction and consult with your doctor</li>
-                <li>For best results, ensure all values are accurate</li>
-              </ol>
-            </div>
-          </div>
-        </section>
-        <!-- About -->
-        <section id="about" class="about section">
-          <div class="container" data-aos="fade-up">
-            <div class="section-title">
-              <h2 class="mb-4">About</h2>
-              <p>
-                This AI-powered tool uses medical features to predict the
-                likelihood of breast cancer for early detection.
-              </p>
-              <p>
-                Developed with advanced machine learning techniques, it aims to
-                assist healthcare professionals and patients.
-              </p>
-              <p>
-                Our model processes 30 medical input features to deliver
-                accurate predictions regarding breast cancer presence.
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      {% endif %}{% if prediction %}
-      <!-- Optional hero block (can be removed if not needed with result) -->
-      <section id="hero" class="hero section">
-        <div class="container-fluid p-0">
-          <div class="row no-gutters">
-            <div
-              class="col-12 content-col d-flex hero-image"
-              data-aos="fade-up"
-            >
-              <div
-                class="content"
-                style="
-                  position: relative;
-                  z-index: 1;
-                  max-width: 600px;
-                  padding: 40px;
-                  color: white;
-                "
-              >
-                <h5 class="agency-name">MEDICAL AI TOOL</h5>
-                <h1 class="main-heading heading-gradient">
-                  BREAST CANCER <br />PREDICTION
-                </h1>
-                <div class="custom-divider my-3"></div>
-                <p class="description">
-                  Our AI Model helps in Breast Cancer Detection based on input
-                  features and provides 98% accurate results.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
-      </section>
+    </div>
 
-      <!-- Top Divider -->
-      <div class="custom-divider my-4"></div>
-
-      <!-- Result Section -->
-      {% if prediction == "Cancerous" %}
-      <div class="result-wrapper text-center mb-5">
-        <div class="row justify-content-center align-items-center">
-          <div class="col-md-3 mb-3">
-            <img
-              src="{{ url_for('static', filename='img2.jpg') }}"
-              alt="Cancer Warning"
-              class="img-fluid rounded"
-            />
-          </div>
-          <div class="col-md-6">
-            <div class="alert alert-danger p-4">
-              <h5 class="text-danger">Cancer Detected ❗</h5>
-              <p>
-                Our analysis indicates potentially cancerous tissue. Please
-                consult with a medical professional immediately.
-              </p>
-              {% if confidence %}
-              <p>
-                <strong>Accuracy Rate For this Prediction:</strong> {{
-                confidence }}%
-              </p>
-              {% endif %}
+    
+    <div id="donationModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-hand-holding-heart me-2" style="color: #28a745;"></i>Make a Donation</h3>
             </div>
-          </div>
-        </div>
-      </div>
-      {% else %}
-      <div class="result-wrapper text-center mb-5">
-        <div class="row justify-content-center align-items-center">
-          <div class="col-md-3 mb-3">
-            <img
-              src="{{ url_for('static', filename='img1.jpg') }}"
-              alt="No Cancer"
-              class="img-fluid rounded"
-            />
-          </div>
-          <div class="col-md-6">
-            <div class="alert alert-success p-4">
-              <h5 class="text-success">No Cancer Detected 🎉</h5>
-              <p>
-                Our analysis shows no signs of cancerous tissue. Continue with
-                regular check-ups.
-              </p>
-              {% if confidence %}
-              <p>
-                <strong>Accuracy Rate For this Prediction:</strong> {{
-                confidence }}%
-              </p>
-              {% endif %}
+            <div class="modal-body">
+                <form id="donationForm" method="POST" action="{{ url_for('add_donation') }}">
+                    <div class="form-group">
+                        <label>Select Donor</label>
+                        <select name="donor_id" class="form-control" required>
+                            <option value="">--Select Donor--</option>
+                            {% if donors %}
+                                {% for donor in donors %}
+                                    <option value="{{ donor.id }}">{{ donor.name }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="" disabled>No donors yet. Register as a donor first!</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Donation Amount ($)</label>
+                        <input type="number" name="amount" class="form-control" placeholder="Enter amount" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Donation Date</label>
+                        <input type="date" name="donation_date" class="form-control" id="donationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message (Optional)</label>
+                        <textarea name="message" class="form-control" rows="2" placeholder="Leave a message..."></textarea>
+                    </div>
+                </form>
             </div>
-          </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('donationModal')">Cancel</button>
+                <button type="submit" form="donationForm" class="btn btn-primary">Donate Now</button>
+            </div>
         </div>
-      </div>
-      {% endif %}
+    </div>
 
-      <!-- Bottom Divider -->
-      <div class="custom-divider my-4"></div>
+    
+    <div id="expenseModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-chart-line me-2" style="color: #dc3545;"></i>Add an Expense</h3>
+            </div>
+            <div class="modal-body">
+                <form id="expenseForm" method="POST" action="{{ url_for('add_expense') }}">
+                    <div class="form-group">
+                        <label>Expense Type</label>
+                        <select name="description" class="form-control" required>
+                            <option value="">--Select Type--</option>
+                            <option value="Blood">Blood</option>
+                            <option value="Food">Food</option>
+                            <option value="Medicine">Medicine</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Expense Amount ($)</label>
+                        <input type="number" name="amount" class="form-control" placeholder="Enter amount" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Expense Date</label>
+                        <input type="date" name="expense_date" class="form-control" id="expenseDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('expenseModal')">Cancel</button>
+                <button type="submit" form="expenseForm" class="btn btn-primary">Add Expense</button>
+            </div>
+        </div>
+    </div>
 
-      <!-- Predict Again Button -->
-      <div class="text-center mt-4">
-        <a
-          href="{{ url_for('user_profile') }}#prediction"
-          class="btn btn-submit btn-primary"
-        >
-          Predict Again
-        </a>
-      </div>
-      {% endif %}
-
-      <!-- Optional message alert -->
-      {% if message %}
-      <div class="alert alert-warning text-center mt-4">
-        <strong>{{ message }}</strong>
-      </div>
-      <!-- Predict Again Button -->
-      <div class="text-center mt-4">
-        <a
-          href="{{ url_for('user_profile') }}#prediction"
-          class="btn btn-submit btn-primary"
-        >
-          Go Back
-        </a>
-      </div>
-      {% endif %}
-    </main>
-
-    <!-- Scripts -->
-
-    <!-- <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    /> -->
-
-    <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/logic.js') }}"></script>
-
-    <!-- Font Awesome for icons -->
-    <script
-      src="https://kit.fontawesome.com/a076d05399.js"
-      crossorigin="anonymous"
-    ></script>
+    
+    <div id="donorModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus me-2" style="color: #17a2b8;"></i>Register as Donor</h3>
+            </div>
+            <div class="modal-body">
+                <form id="donorForm" method="POST" action="{{ url_for('add_donor') }}">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CNIC</label>
+                        <input type="text" name="cnic" class="form-control" placeholder="12345-1234567-1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" name="phone" class="form-control" placeholder="+92 300 0000000" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('donorModal')">Cancel</button>
+                <button type="submit" form="donorForm" class="btn btn-primary">Register</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-      AOS.init();
+        
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            
+            const donationDate = document.getElementById('donationDate');
+            const expenseDate = document.getElementById('expenseDate');
+            
+            if (donationDate) donationDate.value = today;
+            if (expenseDate) expenseDate.value = today;
+        }
+
+        
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+            setDefaultDates(); // Set dates when modal opens
+        }
+
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('show');
+            }
+        }
+
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            setDefaultDates();
+        });
     </script>
-  </body>
+</body>
 </html>

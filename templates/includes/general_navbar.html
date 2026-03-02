@@ -1,26 +1,8 @@
 
-  <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-    messages %}
-    <div class="container mt-5 pt-5">
-      {% for category, message in messages %}
-      <div
-        class="alert alert-{{ category }} alert-dismissible fade show"
-        role="alert"
-      >
-        {{ message }}
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-        ></button>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %} {% endwith %}
 <!-- Navbar / Header -->
 <header class="header d-flex align-items-center fixed-top">
+
+  {% include "includes/flashes.html" %}
   <div
     class="header-container container-fluid container-xl d-flex align-items-center justify-content-between"
   >
@@ -29,12 +11,14 @@
       href="{{ url_for('index') }}"
       class="logo d-flex align-items-center text-decoration-none"
     >
-      <i class="fas fa-ribbon text-danger fs-3 me-2"></i>
-      <h1 class="sitename m-0 fw-bold">BreastCare AI</h1>
+      <i class="fas fa-hand-holding-heart me-2 text-danger fs-3 me-2"></i>
+      <h1 class="sitename m-0 fw-bold">Foundation System</h1>
     </a>
 
     
     <div class="d-flex align-items-center gap-2">
+
+      {% if register_user %}
       <!-- Register User Link with navmenu styles -->
       <a
         href="{{ url_for('register_user') }}"
@@ -42,6 +26,7 @@
       >
         Register User
       </a>
+      {% endif %}
       
 
        {% if home %}
@@ -54,6 +39,7 @@
         Home
       </a>
       {% endif %}
+
       <!-- Login Dropdown -->
       <div class="user-menu dropdown">
         <button
@@ -85,19 +71,5 @@
   </div>
 </header>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Select all Bootstrap alerts
-    const alerts = document.querySelectorAll('.alert');
 
-    alerts.forEach(alert => {
-      // Wait 2 seconds (2000ms) then close
-      setTimeout(() => {
-        // Bootstrap 5 alert remove
-        const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-        bsAlert.close();
-      }, 2000);
-    });
-  });
-</script>
 

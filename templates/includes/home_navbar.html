@@ -1,25 +1,6 @@
-<!-- Flash Messages -->
-  {% with messages = get_flashed_messages(with_categories=true) %} {% if
-  messages %}
-  <div class="container mt-5 pt-5">
-    {% for category, message in messages %}
-    <div
-      class="alert alert-{{ category }} alert-dismissible fade show"
-      role="alert"
-    >
-      {{ message }}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %} {% endwith %}
-<header class="header d-flex align-items-center fixed-top">
 
+<header class="header d-flex align-items-center fixed-top">
+{% include "includes/flashes.html" %}
   <div
     class="header-container container-fluid container-xl d-flex align-items-center justify-content-between"
   >
@@ -33,14 +14,14 @@
       style="display: flex; align-items: center; text-decoration: none"
     >
       <i
-        class="fas fa-ribbon"
+        class="fas fa-hand-holding-heart me-2"
         style="color: #dc3545; font-size: 24px; margin-right: 8px"
       ></i>
       <h1
         class="sitename"
         style="margin: 0; font-weight: bold; color: white; font-size: 20px"
       >
-        BreastCare AI
+        Foundation System
       </h1>
     </a>
 
@@ -48,9 +29,9 @@
       {% if details %}
       <ul>
         <li><a href="{{url_for('user_profile')}}" class="">Home</a></li>
-        <li><a href="#htu">Information</a></li>
+        <!-- <li><a href="#htu">Information</a></li>
         <li><a href="#prediction">Prediction</a></li>
-        <li><a href="#about">About</a></li>
+        <li><a href="#about">About</a></li> -->
       </ul>
       {% endif %}
     </nav>
@@ -72,28 +53,13 @@
    {% endif %}
 
   
-  <a href="{{ url_for('user_profile') }}" class="navmenu-link">Home</a>
+  <!-- <a href="{{ url_for('user_profile') }}" class="navmenu-link">Home</a> -->
   
 
-  <a href="{{ url_for('user_login') }}" class="btn-getstarted">Logout</a>
+  <a href="{{ url_for('user_logout') }}" class="btn-getstarted">Logout</a>
 </div>
 
 
 </header>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Select all Bootstrap alerts
-    const alerts = document.querySelectorAll('.alert');
-
-    alerts.forEach(alert => {
-      // Wait 2 seconds (2000ms) then close
-      setTimeout(() => {
-        // Bootstrap 5 alert remove
-        const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-        bsAlert.close();
-      }, 2000);
-    });
-  });
-</script>
 
