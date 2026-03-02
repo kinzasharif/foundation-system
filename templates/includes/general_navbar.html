@@ -26,14 +26,14 @@
   >
     <!-- Logo -->
     <a
-      href="{{ url_for('home') }}"
+      href="{{ url_for('index') }}"
       class="logo d-flex align-items-center text-decoration-none"
     >
       <i class="fas fa-ribbon text-danger fs-3 me-2"></i>
       <h1 class="sitename m-0 fw-bold">BreastCare AI</h1>
     </a>
 
-    {% if register_user %}
+    
     <div class="d-flex align-items-center gap-2">
       <!-- Register User Link with navmenu styles -->
       <a
@@ -42,13 +42,13 @@
       >
         Register User
       </a>
-      {% endif %}
+      
 
        {% if home %}
     <div class="d-flex align-items-center gap-2">
       <!-- Register User Link with navmenu styles -->
       <a
-        href="{{ url_for('home') }}"
+        href="{{ url_for('index') }}"
         class="nav-link fw-semibold navmenu-link"
       >
         Home

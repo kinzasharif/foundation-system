@@ -1,8 +1,10 @@
 from flask import Flask, render_template, url_for, request, session, redirect, flash
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from datetime import datetime 
 import mysql.connector
+from PIL import Image
 
 def get_db_conection():
         conn = mysql.connector.connect(
@@ -15,6 +17,14 @@ def get_db_conection():
 
 app = Flask(__name__)
 app.secret_key = "secret123"
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
+app.config['MAX_CONTENT_LENGTH'] = 16 * 16 * 1024
+app.config['ALLOWED_EXTENSIONS'] = 'jpg', 'jpeg', 'png'
 
 @app.route('/')
 @app.route('/index')
@@ -38,7 +48,8 @@ def index():
     cursor.close()
     conn.close()
     
-    return render_template('index.html', 
+    return render_template('index.html',register_user=True,
+                           home = True, 
                          donor_count=donor_count,
                          donation_count=donation_count,
                          donation_total=donation_total,
@@ -51,8 +62,7 @@ def view_expenses():
     
     cursor.execute("SELECT * FROM expenses ORDER BY expense_date DESC")
     expenses = cursor.fetchall()
-    
-    # Calculate total
+
     cursor.execute("SELECT SUM(amount) as total FROM expenses")
     total = cursor.fetchone()['total']
     
@@ -101,8 +111,6 @@ def add_expense():
         conn.commit()
         flash("Expense Added Successfully!")
         return redirect(url_for('add_expense'))
-    else:
-        flash("Failed to add")
     
     cursor.close()
     conn.close()
@@ -163,6 +171,413 @@ def add_donor():
     cursor.close()
     conn.close()
     return render_template('add_donor.html')
+
+@app.route('/user_login', methods=['GET', 'POST'])
+def user_login():
+    if request.method == 'POST':
+        conn = get_db_conection()
+        cursor = conn.cursor(dictionary=True)
+
+        identifier = request.form.get('identifier')
+        password = request.form['password']
+
+        cursor.execute("SELECT * FROM users WHERE (username=%s OR email=%s) AND role='user'", (identifier, identifier))  
+        user = cursor.fetchone()
+
+        if user and check_password_hash(user['password'], password):
+            session['user_id'] = user['id']
+            session['username'] = user['username']
+            session['email'] = user['email']
+            session['role'] = user['role']
+            session['phone'] = user.get('phone', '')
+            session['cnic'] = user.get('cnic', '')
+            session['picture'] = user.get('picture', '')
+
+            cursor.close()
+            conn.close()
+            flash("✅ Login successful!")
+            return redirect(url_for('user_profile')) 
+        else:
+            flash("❌ Invalid Username or Password")
+            cursor.close()
+            conn.close()
+            return render_template('Userlogin.html',register_user=True)
+    
+    return render_template('Userlogin.html', register_user=True)
+
+@app.route('/user_profile')
+# @login_required
+def user_profile():
+    conn = get_db_conection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users WHERE id=%s", (session['user_id'],))
+    user = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('Profile.html', user=user, show_pp=True, details=True)
+
+@app.route('/admin_profile')
+# @login_required
+def admin_profile():
+    conn = get_db_conection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users WHERE id = %s", (session['user_id'],))
+    user = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('AdminHome.html', user=user, manage_user=True)
+
+@app.route('/admin/update_profile', methods=['POST'])
+def admin_update_profile():
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('admin_login'))
+    
+    conn = get_db_conection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users WHERE id = %s", (session['user_id'],))
+    user = cursor.fetchone()
+
+    if not user:
+        flash("❌ User not found")
+        cursor.close()
+        conn.close()
+        return redirect(url_for('admin_login'))
+    
+    if request.method == 'POST':
+        if 'remove_picture' in request.form:
+            if user['picture']:
+                old_image_path = os.path.join('static', user['picture'])
+                if os.path.exists(old_image_path):
+                    os.remove(old_image_path)
+            cursor.execute("UPDATE users SET picture='' WHERE id=%s", (session['user_id'],))
+            session['picture'] = ''
+            conn.commit()
+            cursor.close()
+            conn.close()
+            flash("✅ Profile picture removed successfully!")
+            return redirect(url_for('admin_profile'))
+
+        user_id = session['user_id']
+        username = request.form.get('username', user['username']).strip()
+        email = request.form.get('email', user['email']).strip()
+        phone = request.form.get('phone', user.get('phone', '')).strip()
+        cnic = request.form.get('cnic', user.get('cnic', '')).strip()
+        current_password = request.form.get('current_password', '')
+        new_password = request.form.get('new_password', '')
+        confirm_password = request.form.get('confirm_password', '')
+
+        picture_path = user['picture']
+
+        if 'picture' in request.files:
+            file = request.files['picture']
+            if file and file.filename != '' and allowed_file(file.filename):
+                if user['picture']:
+                    old_image_path = os.path.join('static', user['picture'])
+                    if os.path.exists(old_image_path):
+                        os.remove(old_image_path)
+                
+                filename = secure_filename(file.filename)
+                unique_filename = f"admin_{username}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
+                filepath = os.path.join('static/uploads/users', unique_filename)
+                os.makedirs(os.path.dirname(filepath), exist_ok=True)
+                file.save(filepath)
+
+                try:
+                    img = Image.open(filepath)
+                    img.thumbnail((500, 500))
+                    img.save(filepath)
+                except:
+                    pass
+
+                picture_path = f"uploads/users/{unique_filename}"
+
+        if username != user['username'] or email != user['email']:
+            cursor.execute(
+                "SELECT * FROM users WHERE (username=%s OR email=%s) AND id != %s",
+                (username, email, user_id)
+            )
+            if cursor.fetchone():
+                flash("❌ Username or Email already exists! Choose another username/email")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('admin_profile'))
+
+        cursor.execute(
+            "UPDATE users SET username=%s, email=%s, phone=%s, cnic=%s, picture=%s WHERE id=%s",
+            (username, email, phone, cnic, picture_path, user_id)
+        )
+
+        if current_password or new_password or confirm_password:
+            if not current_password or not new_password or not confirm_password:
+                flash("❌ To change password, all password fields are required")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('admin_profile'))
+
+            if not check_password_hash(user['password'], current_password):
+                flash("❌ Current password is incorrect")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('admin_profile'))
+
+            if new_password != confirm_password:
+                flash("❌ New password and confirm password do not match")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('admin_profile'))
+
+            hashed_new_password = generate_password_hash(new_password)
+            cursor.execute(
+                "UPDATE users SET password=%s WHERE id=%s",
+                (hashed_new_password, user_id)
+            )
+            flash("✅ Password updated successfully!")
+        else:
+            flash("✅ Profile updated successfully!")
+
+        session['username'] = username
+        session['email'] = email
+        session['phone'] = phone
+        session['cnic'] = cnic
+        session['picture'] = picture_path
+        session.modified = True
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('admin_profile'))
+
+@app.route('/update_profile', methods=['GET', 'POST'])
+def user_settings():
+    if 'user_id' not in session or session['role'] != 'user':
+        return redirect(url_for('user_login'))
+    
+    conn = get_db_conection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users WHERE id=%s", (session['user_id'],))
+    user = cursor.fetchone()
+
+    if not user:
+        flash("❌ User not found")
+        cursor.close()
+        conn.close()
+        return redirect(url_for('user_login'))
+    
+    if request.method == 'POST':
+        if 'remove_picture' in request.form:
+            if user['picture']:
+                old_image_path = os.path.join('static', user['picture'])
+                if os.path.exists(old_image_path):
+                    os.remove(old_image_path)
+            cursor.execute("UPDATE users SET picture='' WHERE id=%s", (session['user_id'],))
+            session['picture'] = ''
+            conn.commit()
+            cursor.close()
+            conn.close()
+            flash("✅ Profile picture removed successfully!")
+            return redirect(url_for('user_settings'))
+
+        user_id = session['user_id']
+        username = request.form.get('username', user['username']).strip()
+        email = request.form.get('email', user['email']).strip()
+        phone = request.form.get('phone', user.get('phone', '')).strip()
+        cnic = request.form.get('cnic', user.get('cnic', '')).strip()
+        current_password = request.form.get('current_password', '')
+        new_password = request.form.get('new_password', '')
+        confirm_password = request.form.get('confirm_password', '')
+
+        picture_path = user['picture']
+
+        if 'picture' in request.files:
+            file = request.files['picture']
+            if file and file.filename != '' and allowed_file(file.filename):
+                if user['picture']:
+                    old_image_path = os.path.join('static', user['picture'])
+                    if os.path.exists(old_image_path):
+                        os.remove(old_image_path)
+                
+                filename = secure_filename(file.filename)
+                unique_filename = f"{username}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
+                filepath = os.path.join('static/uploads/users', unique_filename)
+                os.makedirs(os.path.dirname(filepath), exist_ok=True)
+                file.save(filepath)
+
+                try:
+                    img = Image.open(filepath)
+                    img.thumbnail((500, 500))
+                    img.save(filepath)
+                except:
+                    pass
+
+                picture_path = f"uploads/users/{unique_filename}"
+
+        if username != user['username'] or email != user['email']:
+            cursor.execute(
+                "SELECT * FROM users WHERE (username=%s OR email=%s) AND id != %s",
+                (username, email, user_id)
+            )
+            if cursor.fetchone():
+                flash("❌ Username or Email already exists! Choose another username/email")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('user_settings'))
+
+        cursor.execute(
+            "UPDATE users SET username=%s, email=%s, phone=%s, cnic=%s, picture=%s WHERE id=%s",
+            (username, email, phone, cnic, picture_path, user_id)
+        )
+
+        if current_password or new_password or confirm_password:
+            if not current_password or not new_password or not confirm_password:
+                flash("❌ To change password, all password fields are required")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('user_settings'))
+
+            if not check_password_hash(user['password'], current_password):
+                flash("❌ Current password is incorrect")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('user_settings'))
+
+            if new_password != confirm_password:
+                flash("❌ New password and confirm password do not match")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('user_settings'))
+
+            hashed_new_password = generate_password_hash(new_password)
+            cursor.execute(
+                "UPDATE users SET password=%s WHERE id=%s",
+                (hashed_new_password, user_id)
+            )
+            flash("✅ Password updated successfully!")
+        else:
+            flash("✅ Profile updated successfully!")
+
+        session['username'] = username
+        session['email'] = email
+        session['phone'] = phone
+        session['cnic'] = cnic
+        session['picture'] = picture_path
+        session.modified = True
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('user_settings'))
+    
+    return render_template('UserSettings.html', user=user)
+@app.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        conn = get_db_conection()
+        cursor = conn.cursor(dictionary=True)
+
+        identifier = request.form.get('identifier')
+        password = request.form['password']
+
+        cursor.execute("SELECT * FROM users WHERE (username=%s OR email=%s) AND role='admin'", (identifier, identifier))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if user and check_password_hash(user['password'], password):  
+            session.update({
+                'user_id': user['id'],
+                'username': user['username'],
+                'email': user['email'],
+                'role': user['role'],
+                'phone': user.get('phone', ''),
+                'cnic': user.get('cnic', ''),
+                'picture': user.get('picture', '')
+            })
+            flash("✅ Admin login successful!")
+            return redirect(url_for('admin_profile'))
+        else:
+            flash("❌ Invalid Admin Username or Password")
+            return render_template('adminlogin.html', register_user=True)
+
+    return render_template('adminlogin.html', register_user=True)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register_user():
+    if request.method == 'POST':
+        try:
+            username = request.form['username'].strip()
+            email = request.form['email'].strip()
+            password = request.form['password']
+
+            hashed_password = generate_password_hash(password)
+
+            phone = request.form['phone'].strip()
+            cnic = request.form['cnic'].strip()
+
+            picture_path = None
+            if 'picture' in request.files:
+                file = request.files['picture']
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    unique_filename = f"{username}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
+                    filepath = os.path.join('static/uploads/users', unique_filename)
+                    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+                    file.save(filepath)
+
+                    try:
+                        img = Image.open(filepath)
+                        img.thumbnail((500, 500))
+                        img.save(filepath)
+                    except Exception as e:
+                        print(f"Error processing image: {e}")
+
+                    picture_path = f"uploads/users/{unique_filename}"
+
+            conn = get_db_conection()
+            cursor = conn.cursor(dictionary=True)
+
+            # Check if username OR email already exists
+            cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                flash("❌ Username or Email already exists! Please use a different one.")
+                cursor.close()
+                conn.close()
+                return redirect(url_for('register_user'))
+
+            cursor.execute("""
+                INSERT INTO users (username, email, password, picture, phone, cnic, role)
+                VALUES (%s, %s, %s, %s, %s, %s, 'user')
+            """, (username, email, hashed_password, picture_path, phone, cnic))
+
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+            flash("✅ Registration successful! Please login.")
+            return redirect(url_for('user_login'))
+
+        except mysql.connector.Error as db_err:
+            print(f"Database error: {db_err}")
+            flash("⚠️ Database error occurred. Please try again.")
+            return redirect(url_for('register_user'))
+
+        except Exception as e:
+            print(f"Error during registration: {e}")
+            flash("⚠️ Something went wrong during registration. Try again.")
+            return redirect(url_for('register_user'))
+
+    return render_template('Register.html', home=True)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
