@@ -10648,7 +10648,7 @@ a {
   -webkit-transition: 0.3s all ease;
   -o-transition: 0.3s all ease;
   transition: 0.3s all ease;
-  color: #01d28e;
+  color: #e91e63;
 }
 a:hover,
 a:focus {
@@ -10660,7 +10660,7 @@ a:focus {
 a:hover,
 a:active,
 a:focus {
-  color: #01d28e;
+  color: #e91e63;
   outline: none !important;
   text-decoration: none !important;
 }
@@ -10682,7 +10682,7 @@ h5,
 }
 
 .bg-primary {
-  background: #01d28e !important;
+  background: #e91e63 !important;
 }
 
 .ftco-section {
@@ -10793,7 +10793,7 @@ h5,
   outline: none !important;
   -webkit-box-shadow: none;
   box-shadow: none;
-  border: 1px solid #01d28e;
+  border: 1px solid #e91e63;
 }
 
 .field-icon {
@@ -10825,7 +10825,7 @@ h5,
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 1px;
-  color: #01d28e;
+  color: #e91e63;
   font-weight: 700;
 }
 
@@ -10848,7 +10848,7 @@ h5,
 }
 .social-media .social-icon:hover,
 .social-media .social-icon:focus {
-  background: #01d28e;
+  background: #e91e63;
 }
 .social-media .social-icon:hover span,
 .social-media .social-icon:focus span {
@@ -10915,10 +10915,10 @@ h5,
 
 /* Style the checkmark/indicator */
 .checkbox-primary {
-  color: #01d28e;
+  color: #e91e63;
 }
 .checkbox-primary input:checked ~ .checkmark:after {
-  color: #01d28e;
+  color: #e91e63;
 }
 
 .btn {
@@ -10934,28 +10934,28 @@ h5,
   outline: none;
 }
 .btn.btn-primary {
-  background: #01d28e !important;
-  border: 1px solid #01d28e !important;
+  background: #e91e63 !important;
+  border: 1px solid #e91e63 !important;
   color: #fff !important;
 }
 .btn.btn-primary:hover {
-  border: 1px solid #01d28e;
+  border: 1px solid #e91e63;
   background: transparent;
-  color: #01d28e;
+  color: #e91e63;
 }
 .btn.btn-primary.btn-outline-primary {
-  border: 1px solid #01d28e;
+  border: 1px solid #e91e63;
   background: transparent;
-  color: #01d28e;
+  color: #e91e63;
 }
 .btn.btn-primary.btn-outline-primary:hover {
   border: 1px solid transparent;
-  background: #01d28e;
+  background: #e91e63;
   color: #fff;
 }
 
 .login-wrap {
-  max-height: 500px; /* Adjust based on your content */
+  max-height: 800px; /* Adjust based on your content */
   overflow-y: auto;
 }
 
@@ -10970,12 +10970,12 @@ h5,
 }
 
 .login-wrap::-webkit-scrollbar-thumb {
-  background: #01d28e;
+  background: #e91e63;
   border-radius: 10px;
 }
 
 .login-wrap::-webkit-scrollbar-thumb:hover {
-  background: #019c6b;
+  background: #e91e63;
 }
 .flash-messages {
   position: fixed;

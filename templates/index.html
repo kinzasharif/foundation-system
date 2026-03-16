@@ -38,276 +38,288 @@
     />
 
     <style>
-        /* Hero Section */
-        .hero {
-            height: 90vh;
-            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ url_for("static", filename="assets/foundation-system.png") }}');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            text-align: center;
-            position: relative;
-        }
+       .hero {
+    height: 90vh;
+    position: relative;
+    overflow: hidden;
+}
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            padding: 20px;
-        }
+.hero-slide {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 60px;
+    background-size: cover;
+    background-position: center;
+}
 
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+.hero-content {
+    max-width: 800px;
+    padding: 20px;
+    color: #fff;
+    z-index: 2;
+}
 
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 30px;
-            opacity: 0.95;
-        }
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
 
-        .btn-hero {
-            padding: 14px 35px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            margin: 0 10px;
-            transition: all 0.3s;
-        }
+.hero p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    opacity: 0.95;
+}
 
-        .btn-hero:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
+.btn-hero {
+    padding: 14px 35px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    margin: 0 10px;
+    transition: all 0.3s;
+}
 
-        /* Info Sections */
-        .info-section {
-            padding: 80px 0;
-            text-align: center;
-        }
+.btn-hero:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
 
-        .info-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-            color: #333;
-        }
+.info-section {
+    padding: 80px 0;
+    text-align: center;
+}
 
-        .info-section .section-subtitle {
-            max-width: 600px;
-            margin: 0 auto 50px;
-            font-size: 1.1rem;
-            color: #666;
-        }
+.info-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #333;
+}
 
-        .feature-icon {
-            font-size: 3rem;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
+.info-section .section-subtitle {
+    max-width: 600px;
+    margin: 0 auto 50px;
+    font-size: 1.1rem;
+    color: #666;
+}
 
-        .feature-card {
-            padding: 35px 25px;
-            border-radius: 15px;
-            background: #fff;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-            transition: all 0.3s;
-            height: 100%;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
+.feature-icon {
+    font-size: 3rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-        }
+.feature-card {
+    padding: 35px 25px;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    transition: all 0.3s;
+    height: 100%;
+    border: 1px solid rgba(0,0,0,0.05);
+}
 
-        .feature-card h5 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
 
-        .feature-card p {
-            color: #666;
-            line-height: 1.7;
-            margin: 0;
-        }
+.feature-card h5 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
 
-        /* Stats Section */
-        .stats-section {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            color: #fff;
-            padding: 60px 0;
-        }
+.feature-card p {
+    color: #666;
+    line-height: 1.7;
+    margin: 0;
+}
 
-        .stat-item {
-            text-align: center;
-            padding: 20px;
-        }
+.stats-section {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: #fff;
+    padding: 60px 0;
+}
 
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+.stat-item {
+    text-align: center;
+    padding: 20px;
+}
 
-        .stat-label {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
 
-        /* Impact Stories */
-        .impact-card {
-            background: #fff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
-        }
+.stat-label {
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
 
-        .impact-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
+.impact-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
 
-        .impact-content {
-            padding: 25px;
-        }
+.impact-img {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
 
-        .impact-content h5 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
+.impact-content {
+    padding: 25px;
+}
 
-        .impact-content p {
-            color: #666;
-            margin-bottom: 15px;
-        }
+.impact-content h5 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
 
-        .impact-date {
-            color: #999;
-            font-size: 0.9rem;
-        }
+.impact-content p {
+    color: #666;
+    margin-bottom: 15px;
+}
 
-        /* Footer */
-        footer {
-            background: #2c3e50;
-            color: #fff;
-            padding: 50px 0 20px;
-        }
+.impact-date {
+    color: #999;
+    font-size: 0.9rem;
+}
 
-        .footer-widget {
-            margin-bottom: 30px;
-        }
+footer {
+    background: #2c3e50;
+    color: #fff;
+    padding: 50px 0 20px;
+}
 
-        .footer-widget h5 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
+.footer-widget {
+    margin-bottom: 30px;
+}
 
-        .footer-widget h5:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 2px;
-            background: #3498db;
-        }
+.footer-widget h5 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
 
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
+.footer-widget h5:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background: #3498db;
+}
 
-        .footer-links li {
-            margin-bottom: 10px;
-        }
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
 
-        .footer-links a {
-            color: #fff;
-            opacity: 0.8;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
+.footer-links li {
+    margin-bottom: 10px;
+}
 
-        .footer-links a:hover {
-            opacity: 1;
-        }
+.footer-links a {
+    color: #fff;
+    opacity: 0.8;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
 
-        .social-links a {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            color: #fff;
-            margin-right: 10px;
-            transition: all 0.3s;
-        }
+.footer-links a:hover {
+    opacity: 1;
+}
 
-        .social-links a:hover {
-            background: #3498db;
-            transform: translateY(-3px);
-        }
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
 
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            margin-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            opacity: 0.8;
-        }
+.social-links a:hover {
+    background: #3498db;
+    transform: translateY(-3px);
+}
 
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, #3498db, #2c3e50);
-            color: #fff;
-            padding: 60px 0;
-            text-align: center;
-        }
+.copyright {
+    text-align: center;
+    padding-top: 30px;
+    margin-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    opacity: 0.8;
+}
 
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
+.cta-section {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: #fff;
+    padding: 60px 0;
+    text-align: center;
+}
 
-        .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
+.cta-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
 
-        .btn-cta {
-            background: #fff;
-            color: #2c3e50;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
+.cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
 
-        .btn-cta:hover {
-            background: #f8f9fa;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
+.btn-cta {
+    background: #fff;
+    color: #2c3e50;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-cta:hover {
+    background: #f8f9fa;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .hero-slide {
+        padding-bottom: 40px;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+}
     </style>
 </head>
 
@@ -316,18 +328,43 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>Hope Foundation System</h1>
-            <p>
-                Empowering communities through sustainable development, education, 
-                and healthcare initiatives. Together, we can make a difference.
-            </p>
-            <div>
-                <a href="{{ url_for('register_user') }}" class="btn btn-primary btn-hero">Join Our Mission</a>
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+
+        <div class="carousel-inner">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active hero-slide"
+                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ url_for("static", filename="assets/donation3.jpg") }}');">
+               
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item hero-slide"
+                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ url_for("static", filename="assets/donation1.jpg") }}');">
+                <div class="hero-content">
+                    
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item hero-slide"
+                style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('{{ url_for("static", filename="assets/donation2.jpg") }}');">
                 
             </div>
+
         </div>
-    </section>
+
+        <!-- arrows -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+
+    </div>
+</section>
 
     <!-- Stats Section -->
     <section class="stats-section">
@@ -335,26 +372,20 @@
             <div class="row">
                 <div class="col-md-3 col-sm-6">
                     <div class="stat-item">
-                        <div class="stat-number">5000+</div>
-                        <div class="stat-label">Lives Impacted</div>
+                        <div class="stat-label">Total Donations</div>
+                        <div class="stat-number">Rs {{ donation_total|default(0) }}</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="stat-item">
-                        <div class="stat-number">25+</div>
-                        <div class="stat-label">Active Projects</div>
+                        <div class="stat-label">Total Donors</div>
+                        <div class="stat-number">{{ donor_count|default(0) }}</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="stat-item">
-                        <div class="stat-number">100+</div>
-                        <div class="stat-label">Volunteers</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="stat-item">
-                        <div class="stat-number">15+</div>
-                        <div class="stat-label">Partner NGOs</div>
+                        <div class="stat-label">Expenses</div>
+                        <div class="stat-number">Rs {{ "%.2f"|format(expense_total|default(0)) }}</div>
                     </div>
                 </div>
             </div>
@@ -373,18 +404,17 @@
             <div class="row mt-4">
                 <div class="col-md-4">
                     <div class="feature-card">
-                        <i class="fas fa-graduation-cap feature-icon"></i>
-                        <h5>Education</h5>
+                        <i class="fas fa-dove feature-icon"></i>
+                        <h5>Charity</h5>
                         <p>
-                            Providing quality education and scholarships to underprivileged 
-                            children and youth.
+                            Providing a platform to Raise Funds for the Needy.
                         </p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <i class="fas fa-heartbeat feature-icon"></i>
-                        <h5>Healthcare</h5>
+                        <h5>Health Support</h5>
                         <p>
                             Accessible medical camps, health awareness programs, and 
                             treatment support.
@@ -393,60 +423,16 @@
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
-                        <i class="fas fa-home feature-icon"></i>
-                        <h5>Community Development</h5>
+                        <i class="fas fa-donate feature-icon"></i>
+                        <h5>Donation Trasnperancy</h5>
                         <p>
-                            Infrastructure projects, clean water initiatives, and 
-                        livelihood programs.
+                           Making sure that each of ur donations reach the destination.
                     </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-    <!-- Impact Stories -->
-    <section class="info-section bg-light">
-        <div class="container">
-            <h2>Recent Impact Stories</h2>
-            <p class="section-subtitle">
-                Real stories of hope and transformation from communities we've served.
-            </p>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="impact-card">
-                        <div class="impact-img" style="background-image: url('{{ url_for("static", filename="assets/img/impact-1.jpg") }}')"></div>
-                        <div class="impact-content">
-                            <h5>Education for All</h5>
-                            <p>50 underprivileged children received scholarships for the academic year 2024.</p>
-                            <div class="impact-date">March 15, 2024</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="impact-card">
-                        <div class="impact-img" style="background-image: url('{{ url_for("static", filename="assets/img/impact-2.jpg") }}')"></div>
-                        <div class="impact-content">
-                            <h5>Medical Camp Success</h5>
-                            <p>Free medical camp served over 500 patients in rural areas.</p>
-                            <div class="impact-date">February 28, 2024</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="impact-card">
-                        <div class="impact-img" style="background-image: url('{{ url_for("static", filename="assets/img/impact-3.jpg") }}')"></div>
-                        <div class="impact-content">
-                            <h5>Clean Water Initiative</h5>
-                            <p>New water filtration system installed serving 200 families.</p>
-                            <div class="impact-date">January 10, 2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Call to Action -->
     <section class="cta-section">

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation Dashboard</title>
+    <link rel="stylesheet" href={{ url_for('static', filename='assets/css/style.css')}}>
+</head>
+<body>
+    {% include "includes/flashes.html"%}
+    <header>
+        <h1 >Foundation Donation & Expense Management System</h1>
+        <nav>
+            <a href="{{ url_for('add_donor')}}">Add Donor</a>
+            <a href="{{ url_for('add_donation')}}">Add Donation</a>
+            <a href="{{ url_for('add_expense')}}">Add Expense</a>
+            <a href="{{ url_for('view_donations')}}">View Donations</a>
+            <a href="{{ url_for('view_expenses')}}">View Expenses</a>
+        </nav>
+    </header>
+
+
+    <main>
+        <h2>Welcome Admin / Staff</h2>
+        <p>Use the menu above to navigate through the system.</p>
+    </main>
+</body>
+</html>
